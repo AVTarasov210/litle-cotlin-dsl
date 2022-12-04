@@ -14,15 +14,22 @@ class StateProviderBuilder<E : Enum<E>> {
 
     fun state(state: E, builder: ActionProviderBuilder<E>.() -> Unit) =
         stateProviders.put(state, ActionProviderBuilder<E>().apply(builder).toService())
+
+    infix fun E.state(builder: ActionProviderBuilder<E>.() -> Unit) {
+        state(this, builder)
+    }
 }
 
 class ActionProviderBuilder<E : Enum<E>> {
     private val actionProviders: MutableMap<String, () -> E> = mutableMapOf()
     private var defaultProvider: (() -> E)? = null
 
-    fun toService() = ActionProviderService(actionProviders, defaultProvider)
-
     fun action(action: String, body: () -> E) = actionProviders.put(action, body)
+    infix fun String.action(field: () -> E) {
+        action(this, field)
+    }
+
+    fun toService() = ActionProviderService(actionProviders, defaultProvider)
 
     fun default(body: () -> E) {
         defaultProvider = body

@@ -3,14 +3,14 @@ import ru.abdyabdya.tg.bot.dsl.processor
 
 fun main(args: Array<String>) {
     processor(Test()) {
-        state(TestState.A) {
-            action("print") {
+        TestState.A state {
+            "print" action {
                 println("I am printing")
                 TestState.B
             }
         }
-        state(TestState.A) {
-            action("back") {
+        TestState.A state {
+            "back" action {
                 println("Back to A")
                 TestState.A
             }
