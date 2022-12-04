@@ -1,5 +1,7 @@
 package ru.abdyabdya.tg.bot.core
 
+import java.lang.IllegalArgumentException
+
 class StateProviderService<E : Enum<E>> (
     private val stateProviders: Map<E, ActionProviderService<E>>
 ) {
@@ -8,7 +10,7 @@ class StateProviderService<E : Enum<E>> (
     }
 
     fun getActions(state: E): Set<String> {
-        return stateProviders[state]!!.actionProviders.keys
+        return stateProviders[state]?.actionProviders?.keys ?: throw IllegalArgumentException("State $state has no actions")
     }
 }
 

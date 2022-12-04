@@ -2,20 +2,28 @@ import ru.abdyabdya.tg.bot.core.StateService
 import ru.abdyabdya.tg.bot.dsl.processor
 
 fun main(args: Array<String>) {
-    processor(Test()) {
+    var proc = processor(Test()) {
         TestState.A state {
-            "print" action {
+            "print" doing {
                 println("I am printing")
                 TestState.B
             }
         }
-        TestState.A state {
-            "back" action {
+        TestState.B state {
+            "back" doing {
                 println("Back to A")
                 TestState.A
             }
         }
+        TestState.A withAction "banana" doing {
+            println("potato")
+            TestState.B
+        }
     }
+
+    println("You can use: ${proc.process("print", "me")}")
+    println("You can use: ${proc.process("back", "me")}")
+    println("You can use: ${proc.process("banana", "me")}")
 }
 
 enum class TestState {
@@ -34,6 +42,7 @@ class Test : StateService<TestState> {
     }
 
     override fun nextState(state: TestState, identifier: Any): TestState {
-        TODO("Not yet implemented")
+        states[identifier] = state
+        return state
     }
 }
