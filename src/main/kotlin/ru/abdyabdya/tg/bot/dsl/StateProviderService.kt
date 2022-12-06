@@ -3,10 +3,6 @@ package ru.abdyabdya.tg.bot.dsl
 import ru.abdyabdya.tg.bot.core.ActionProviderService
 import ru.abdyabdya.tg.bot.core.StateProviderService
 
-fun <E : Enum<E>> StateProviderService<E>.stateProviders(
-    builder: StateProviderBuilder<E>.() -> Unit
-) = StateProviderBuilder<E>().apply(builder).toService()
-
 class StateProviderBuilder<E : Enum<E>> {
     private val stateProviders: MutableMap<E, ActionProviderBuilder<E>> = mutableMapOf()
 
@@ -58,7 +54,7 @@ class ActionProviderBuilder<E : Enum<E>> {
     }
 }
 
-class ActionContainer<E: Enum<E>>(
-    val states: List<E> ,
-    val actionNames: List<String>,
+class ActionContainer<E : Enum<E>>(
+    val states: List<E>,
+    val actionNames: List<String>
 )
